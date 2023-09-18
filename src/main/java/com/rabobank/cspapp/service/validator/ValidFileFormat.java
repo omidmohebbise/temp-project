@@ -1,9 +1,7 @@
 package com.rabobank.cspapp.service.validator;
 
 
-import lombok.Getter;
 
-@Getter
 public enum ValidFileFormat {
     XML(".xml"), CSV(".csv");
 
@@ -21,4 +19,7 @@ public enum ValidFileFormat {
         throw new IllegalArgumentException("Invalid file type. Please upload a valid XML or CSV bank statement.");
     }
 
+    public String getValue() {
+        return value;
+    }
 }
