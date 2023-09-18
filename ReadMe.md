@@ -9,9 +9,7 @@
 - [Usage](#usage)
 - [Input Data Format](#input-data-format)
 - [Output](#output)
-- [Validation Rules](#validation-rules)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Introduction
 
@@ -83,8 +81,16 @@ The application performs two validations:
 So, The API will return a report containing repetitive statements and invalid items reported as a JSON object, as shown below:
 ```agsl
 {
-"duplicatedStatement": [],
-"invalidEndBalance": []
+[
+{
+    "reference": "112806",
+    "description": "The transaction 112806 failed due to duplication."
+  },
+  {
+    "reference": "192480",
+    "description": "The transaction 192480 failed: The end balance is not as expected after the mutation."
+  }
+]
 }
 ```
 
