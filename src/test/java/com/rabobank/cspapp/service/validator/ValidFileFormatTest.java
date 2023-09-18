@@ -16,8 +16,8 @@ class ValidFileFormatTest {
 
     @Test
     public void testGetByValueWithInvalidValue() {
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
                 () -> ValidFileFormat.getByValue(".doc")
         );
 

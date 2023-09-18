@@ -48,8 +48,8 @@ class FileUtilTest {
         MultipartFile multipartFile = mock(MultipartFile.class);
         when(multipartFile.getBytes()).thenThrow(new IOException("Simulated IOException"));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
                 () -> fileUtil.fileToString(multipartFile)
         );
 
