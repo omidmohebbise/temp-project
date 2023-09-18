@@ -1,0 +1,31 @@
+# Ignore Gradle build-related files and directories
+.gradle/
+build/
+!build/libs/
+
+# Ignore application properties for development
+src/main/resources/application.properties
+
+# Ignore Eclipse and IntelliJ IDEA specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore logs
+logs/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Gradle Wrapper's generated files
+gradle-wrapper.jar
+gradle-wrapper.properties
+
+# Ignore local application configuration files
+config/application-local.properties
+config/application-local.yml
