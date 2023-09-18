@@ -50,7 +50,8 @@ public class BankStatementController extends ResponseEntityExceptionHandler {
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<ExceptionResponse> handleRunTimeExceptions(RuntimeException e) {
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON)
-                .body(new ExceptionResponse(e.getMessage()));
+                .body(new ExceptionResponse("Oops! Something is wrong. Please check your file content to be correct" +
+                        " and try again."));
     }
 
     @ExceptionHandler({IllegalArgumentException.class})
