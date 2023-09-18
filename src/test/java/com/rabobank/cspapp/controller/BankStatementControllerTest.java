@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -31,12 +30,8 @@ class BankStatementControllerTest {
     void checkEmptyFileException() {
         MultipartFile file = mock(MultipartFile.class);
         when(file.isEmpty()).thenReturn(true);
+        var result  = assertThrows(IllegalArgumentException.class, ()-> bankStatementController.validateMonthlyStatements(file));
+        assertEquals(result.getMessage(), "The file is empty.");
 
-        var result = bankStatementController.validateMonthlyStatements(file);
-        assertAll(
-                "Check 3 item in result: ",
-                ()-> assertEquals(result.getStatusCode(), HttpStatus.BAD_REQUEST),
-                ()-> assertEquals(result.getBody(), "The file is empty.")
-        );
     }
 }
