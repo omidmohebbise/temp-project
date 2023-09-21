@@ -3,8 +3,7 @@
 build/
 !build/libs/
 
-# Ignore application properties for development
-src/main/resources/application.properties
+
 
 # Ignore Eclipse and IntelliJ IDEA specific files
 .idea/
@@ -12,17 +11,3 @@ src/main/resources/application.properties
 *.ipr
 *.iws
 
-# Ignore Visual Studio Code settings
-.vscode/
-
-# Ignore logs
-logs/
-
-# Ignore OS-specific files
-.DS_Store
-Thumbs.db
-
-
-# Ignore local application configuration files
-config/application-local.properties
-config/application-local.yml
