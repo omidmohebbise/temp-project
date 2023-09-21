@@ -22,9 +22,6 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Ignore Gradle Wrapper's generated files
-gradle-wrapper.jar
-gradle-wrapper.properties
 
 # Ignore local application configuration files
 config/application-local.properties
