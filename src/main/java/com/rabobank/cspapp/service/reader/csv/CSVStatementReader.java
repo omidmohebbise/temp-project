@@ -30,7 +30,7 @@ public class CSVStatementReader implements StatementReader {
         try {
             MappingIterator<Statement> mappingIterator = csvMapper.readerFor(Statement.class).with(bootstrap).readValues(statements);
             return mappingIterator.readAll();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("An error occurred while processing the CSV data. Please ensure the data is " +
                     "correctly formatted and retry.", e);
         }

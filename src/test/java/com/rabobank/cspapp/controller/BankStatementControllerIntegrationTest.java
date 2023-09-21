@@ -2,20 +2,17 @@ package com.rabobank.cspapp.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabobank.cspapp.TestUtil;
 import com.rabobank.cspapp.controller.dto.StatementReport;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.StreamUtils;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,13 +27,20 @@ public class BankStatementControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private TestUtil testUtil;
+
+    @BeforeEach
+    void setUp() {
+        testUtil = new TestUtil();
+    }
+
     @Test
     void validateMonthlyStatements_SingleValidXML() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "monthlyReportFile",
                 "statements.xml",
                 "text/plain",
-                readFileFromResources("bank-statement-controller/single-valid-statement.xml").getBytes()
+                testUtil.readFileFromResources("bank-statement-controller/single-valid-statement.xml").getBytes()
         );
 
         var result = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/bank-statements/monthly-validator")
@@ -56,7 +60,7 @@ public class BankStatementControllerIntegrationTest {
                 "monthlyReportFile",
                 "statements.xml",
                 "text/plain",
-                readFileFromResources("bank-statement-controller/single-invalid-statement.xml").getBytes()
+                testUtil.readFileFromResources("bank-statement-controller/single-invalid-statement.xml").getBytes()
         );
 
         var result = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/bank-statements/monthly-validator")
@@ -77,7 +81,7 @@ public class BankStatementControllerIntegrationTest {
                 "monthlyReportFile",
                 "statements.xml",
                 "text/plain",
-                readFileFromResources("bank-statement-controller/invalid-repetitive-statement.xml").getBytes()
+                testUtil.readFileFromResources("bank-statement-controller/invalid-repetitive-statement.xml").getBytes()
         );
 
         var result = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/bank-statements/monthly-validator")
@@ -99,7 +103,7 @@ public class BankStatementControllerIntegrationTest {
                 "monthlyReportFile",
                 "statements.csv",
                 "text/plain",
-                readFileFromResources("bank-statement-controller/single-valid-statement.csv").getBytes()
+                testUtil.readFileFromResources("bank-statement-controller/single-valid-statement.csv").getBytes()
         );
 
         var result = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/bank-statements/monthly-validator")
@@ -118,7 +122,7 @@ public class BankStatementControllerIntegrationTest {
                 "monthlyReportFile",
                 "statements.csv",
                 "text/plain",
-                readFileFromResources("bank-statement-controller/single-invalid-statement.csv").getBytes()
+                testUtil.readFileFromResources("bank-statement-controller/single-invalid-statement.csv").getBytes()
         );
 
         var result = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/bank-statements/monthly-validator")
@@ -138,7 +142,7 @@ public class BankStatementControllerIntegrationTest {
                 "monthlyReportFile",
                 "statements.csv",
                 "text/plain",
-                readFileFromResources("bank-statement-controller/invalid-repetitive-statement.csv").getBytes()
+                testUtil.readFileFromResources("bank-statement-controller/invalid-repetitive-statement.csv").getBytes()
         );
 
         var result = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/bank-statements/monthly-validator")
@@ -153,7 +157,5 @@ public class BankStatementControllerIntegrationTest {
     }
 
 
-    private String readFileFromResources(String fileName) throws IOException {
-        return StreamUtils.copyToString(new ClassPathResource(fileName).getInputStream(), StandardCharsets.UTF_8);
-    }
+
 }

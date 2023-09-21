@@ -60,7 +60,7 @@ class CSVStatementReadeTest {
 
     @Test
     void checkValidExceptionWhenFileContentIsNotValid() {
-        assertThrows(RuntimeException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 csvStatementReader.read(INVALID_STATEMENT_CSV)
         );
     }

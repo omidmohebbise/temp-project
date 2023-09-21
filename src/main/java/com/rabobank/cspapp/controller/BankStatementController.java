@@ -4,8 +4,6 @@ import com.rabobank.cspapp.controller.dto.ExceptionResponse;
 import com.rabobank.cspapp.controller.dto.StatementReport;
 import com.rabobank.cspapp.controller.mapper.StatementMapper;
 import com.rabobank.cspapp.service.reader.StatementFileReader;
-import com.rabobank.cspapp.service.validator.ValidFileFormat;
-import com.rabobank.cspapp.util.FileUtil;
 import com.rabobank.cspapp.service.validator.StatementValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
-import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 @RestController
@@ -40,19 +37,12 @@ public class BankStatementController extends ResponseEntityExceptionHandler {
     @ApiResponse(responseCode = "400", description = "Bad request")
     @PostMapping(value = "/monthly-validator", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> validateMonthlyStatements(@RequestParam(value = "monthlyReportFile") MultipartFile monthlyReportFile) {
-
         if (monthlyReportFile.isEmpty()) {
-            return ResponseEntity.badRequest().body("The file is empty.");
+            throw new IllegalArgumentException("The file is empty.");
         } else {
-            FileUtil fileUtil = new FileUtil();
-            String fileContent = fileUtil.fileToString(monthlyReportFile);
-
-            ValidFileFormat validFileFormat = ValidFileFormat.getByValue(fileUtil.getFileExtension(
-                    Objects.requireNonNull(monthlyReportFile.getOriginalFilename())));
-
             return ResponseEntity.ok(StatementMapper.mapToResponseDTO(
                     statementValidator.validateStatements(
-                            statementFileReader.read(fileContent, validFileFormat)
+                            statementFileReader.readFileContent(monthlyReportFile)
                     )));
         }
     }
@@ -60,9 +50,11 @@ public class BankStatementController extends ResponseEntityExceptionHandler {
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<ExceptionResponse> handleRunTimeExceptions(RuntimeException e) {
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON)
-                .body(new ExceptionResponse(e.getMessage()));
+                .body(new ExceptionResponse("Oops! Something is wrong. Please check your file content to be correct" +
+                        " and try again."));
     }
-    @ExceptionHandler({ IllegalArgumentException.class})
+
+    @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<ExceptionResponse> handleIllegalArgumentExceptions(IllegalArgumentException e) {
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON)
                 .body(new ExceptionResponse(e.getMessage()));
