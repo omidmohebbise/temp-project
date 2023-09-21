@@ -10,7 +10,8 @@ COPY ./gradlew /home/app/gradlew
 COPY ./build.gradle /home/app/build.gradle
 COPY ./settings.gradle /home/app/settings.gradle
 
-RUN ./gradlew clean build
+RUN ./gradlew clean
+RUN ./gradlew build
 
 #
 # Package stage
